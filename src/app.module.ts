@@ -9,7 +9,16 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [
+    PrismaModule,
+    UserModule,
+    PostModule,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      playground: true,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
