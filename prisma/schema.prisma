@@ -1,0 +1,37 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account{
+  accountId      String      @id 
+  email String @unique
+  password String
+  user User?
+}
+
+model User {
+  userId     String     @id 
+  userName String @unique
+  account   Account    @relation(fields: [accountId], references: [accountId])
+  accountId String     @unique
+  posts Post[]
+}
+
+model Post {
+    postId String @id
+    userId String
+    contents String
+    user User @relation(fields: [userId] , references: [userId])
+}
+
+model Favorite {
+    userId String
+    postId String
+    @@unique([userId,postId]) 
+}
+
